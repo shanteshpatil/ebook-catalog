@@ -135,7 +135,7 @@
     /* ─── HERO ─── */
     .hero {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1.4fr;
       align-items: center;
       gap: 60px;
       max-width: 1200px;
@@ -217,9 +217,8 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      border-radius: 16px;
+      border-radius: 0;
       box-shadow: var(--shadow-lg);
-      border: 1px solid rgba(0,0,0,.07);
       display: block;
     }
 
@@ -762,7 +761,7 @@
     </div>
     <div class="screenshots-tabs reveal">
       <button class="tab-btn active" onclick="showTab(0, this)">Grid View</button>
-      <button class="tab-btn" onclick="showTab(1, this)">List View</button>
+      <button class="tab-btn" onclick="showTab(1, this)">Book Details</button>
     </div>
     <div class="screenshot-frame reveal reveal-delay-2">
       <div class="screenshot-panel active" id="tab-0">
