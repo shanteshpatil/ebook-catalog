@@ -586,13 +586,14 @@ html, body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.book-list tr:nth-child(even) td { background: #fdfcfa; }
 .book-list tr:hover td { background: var(--accent-soft); cursor: pointer; }
 .book-list .cover-thumb {
   width: 32px;
   height: 48px;
   object-fit: cover;
   border-radius: 3px;
-  background: var(--tag-bg);
+  background: #2c5f2e;
 }
 
 /* ── Status filter pills (toolbar) ─────────────────────────────────── */

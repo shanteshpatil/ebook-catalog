@@ -4,7 +4,7 @@
   min-width: 140px;
   max-width: 400px;
   flex-shrink: 0;
-  background: var(--surface);
+  background: #fdfcfa;
   overflow-y: auto;
   padding: 16px 0;
   /* No border-right — the resizer provides the visual divider */
@@ -36,6 +36,16 @@
   letter-spacing: 1px;
   color: var(--text-light);
   padding: 0 16px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
 }
 
 .sidebar-list {
@@ -61,6 +71,8 @@
   background: var(--accent-soft);
   color: var(--accent);
   font-weight: 600;
+  border-left: 3px solid var(--accent);
+  padding-left: 13px; /* 16 - 3 to keep text aligned */
 }
 .sidebar-list li.active .sidebar-count {
   background: var(--accent);
