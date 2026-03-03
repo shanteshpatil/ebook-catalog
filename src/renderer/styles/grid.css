@@ -1,0 +1,122 @@
+/* Book Grid */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 18px;
+  padding: 20px;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.book-card:active {
+  transform: translateY(-1px);
+}
+
+/* Cover image */
+.book-cover-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: linear-gradient(135deg, #e8f0e9 0%, #f3f4f6 100%);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.book-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  /* Force GPU compositing for smoother downscaling */
+  transform: translateZ(0);
+}
+
+.book-cover-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.5;
+  font-family: Georgia, serif;
+  text-transform: uppercase;
+}
+
+/* Format badge on card */
+.card-format-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+/* Card info */
+.book-card-info {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.card-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.card-author {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.card-year {
+  font-size: 10px;
+  color: var(--text-light);
+}
+
+.card-stars {
+  display: flex;
+  gap: 1px;
+  margin-left: auto;
+}
+.card-star {
+  font-size: 9px;
+  color: var(--text-light);
+}
+.card-star.filled { color: #f59e0b; }

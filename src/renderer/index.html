@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: file:; font-src 'self'; frame-src 'self' file: data:;">
+  <title>Book Catalog</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/sidebar.css">
+  <link rel="stylesheet" href="styles/grid.css">
+  <link rel="stylesheet" href="styles/modal.css">
+  <link rel="stylesheet" href="styles/reader.css">
+</head>
+<body>
+  <!-- Scan overlay -->
+  <div id="scan-overlay" class="hidden">
+    <div class="scan-box">
+      <div class="scan-icon">📚</div>
+      <h2>Scanning your library…</h2>
+      <p id="scan-status">Preparing scan…</p>
+      <div class="progress-track">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <p class="progress-text" id="progress-text">0 / 0 files</p>
+    </div>
+  </div>
+
+  <!-- Welcome / first-run screen -->
+  <div id="welcome-screen">
+    <div class="welcome-box">
+      <div class="welcome-icon">📚</div>
+      <h1>Book Catalog</h1>
+      <div id="welcome-no-path">
+        <p>Choose the folder that contains your ebooks to get started.</p>
+        <button class="btn btn-primary btn-large" id="btn-choose-folder">Choose Library Folder</button>
+      </div>
+      <div id="welcome-has-path" class="hidden">
+        <p>Your library: <strong id="welcome-path-display"></strong></p>
+        <div class="welcome-actions">
+          <button class="btn btn-primary btn-large" id="btn-start-scan">Scan Library</button>
+          <button class="btn btn-secondary btn-sm" id="btn-change-folder-welcome">Change Folder</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main app -->
+  <div id="app" class="hidden">
+    <!-- Top toolbar -->
+    <header class="toolbar">
+      <div class="toolbar-left">
+        <span class="app-logo">📚</span>
+        <span class="app-title">Book Catalog</span>
+      </div>
+      <div class="toolbar-center">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+          </svg>
+          <input type="text" id="search-input" class="search-input" placeholder="Search title, author, series…">
+          <button class="search-clear hidden" id="search-clear">✕</button>
+        </div>
+      </div>
+      <div class="toolbar-right">
+        <!-- Status filter pills -->
+        <div class="status-filter" id="status-filter">
+          <button class="status-pill active" data-status="all">All</button>
+          <button class="status-pill" data-status="reading">📖 Reading</button>
+          <button class="status-pill" data-status="read">✓ Read</button>
+        </div>
+
+        <div class="view-toggle">
+          <button class="view-btn active" id="btn-grid" title="Grid view">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          </button>
+          <button class="view-btn" id="btn-list" title="List view">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+          </button>
+        </div>
+        <div class="sort-wrap">
+          <select id="sort-select" class="sort-select">
+            <option value="title">Sort: Title</option>
+            <option value="author_sort">Sort: Author</option>
+            <option value="year">Sort: Year</option>
+            <option value="file_size">Sort: Size</option>
+            <option value="rating">Sort: Rating</option>
+          </select>
+          <button class="sort-dir-btn" id="sort-dir" title="Toggle direction">↑</button>
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn btn-secondary btn-sm" id="btn-rescan" title="Rescan library">↺ Rescan</button>
+          <div class="export-wrap">
+            <button class="btn btn-secondary btn-sm" id="btn-export">Export ▾</button>
+            <div class="export-dropdown hidden" id="export-dropdown">
+              <button id="export-csv">Export CSV</button>
+              <button id="export-json">Export JSON</button>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-sm btn-icon" id="btn-settings" title="Settings">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Body: sidebar + content -->
+    <div class="body-wrap">
+      <!-- Left sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-heading">FOLDERS</div>
+          <ul class="sidebar-list" id="folder-list"></ul>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">FORMATS</div>
+          <ul class="sidebar-list" id="format-list"></ul>
+        </div>
+      </aside>
+
+      <!-- Sidebar resize handle -->
+      <div class="sidebar-resizer" id="sidebar-resizer"></div>
+
+      <!-- Main content -->
+      <main class="content">
+        <div class="stats-bar" id="stats-bar">
+          <span id="stats-text">0 books</span>
+        </div>
+
+        <div id="grid-view" class="book-grid"></div>
+        <div id="list-view" class="book-list hidden"></div>
+        <div id="empty-state" class="empty-state hidden">
+          <div class="empty-icon">🔍</div>
+          <p>No books found</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Book detail modal -->
+  <div class="modal-backdrop hidden" id="modal-backdrop">
+    <div class="modal" id="book-modal">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-body">
+        <div class="modal-cover-wrap">
+          <img class="modal-cover" id="modal-cover" src="" alt="">
+          <div class="modal-cover-placeholder hidden" id="modal-cover-placeholder"></div>
+        </div>
+        <div class="modal-info">
+          <div class="modal-title-wrap">
+            <h2 class="modal-title" id="modal-title"></h2>
+            <input class="modal-edit-input hidden" id="modal-title-input" type="text" placeholder="Book title">
+            <button class="edit-field-btn" id="modal-title-edit" title="Edit title">✎</button>
+          </div>
+          <div class="modal-author-wrap">
+            <p class="modal-author" id="modal-author"></p>
+            <input class="modal-edit-input hidden" id="modal-author-input" type="text" placeholder="Author name">
+            <button class="edit-field-btn" id="modal-author-edit" title="Edit author">✎</button>
+          </div>
+          <div class="modal-meta-row">
+            <span class="format-badge" id="modal-format"></span>
+            <span class="modal-year" id="modal-year"></span>
+            <span class="modal-lang" id="modal-lang"></span>
+          </div>
+          <div class="modal-tags" id="modal-tags"></div>
+          <div class="modal-series" id="modal-series"></div>
+          <div class="modal-publisher" id="modal-publisher"></div>
+          <div class="modal-size" id="modal-size"></div>
+
+          <!-- Rating -->
+          <div class="rating-wrap" id="modal-rating-wrap">
+            <span class="rating-label">Rating</span>
+            <div class="stars" id="modal-stars"></div>
+          </div>
+
+          <!-- Reading status -->
+          <div class="status-wrap">
+            <span class="rating-label">Status</span>
+            <div class="status-selector" id="modal-status-selector">
+              <button class="status-opt" data-status="unread">Unread</button>
+              <button class="status-opt" data-status="reading">📖 Reading</button>
+              <button class="status-opt" data-status="read">✓ Read</button>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="notes-wrap">
+            <span class="rating-label">Notes</span>
+            <textarea class="notes-textarea" id="modal-notes" placeholder="Add your notes about this book…" rows="3"></textarea>
+          </div>
+
+          <!-- Description -->
+          <div class="modal-desc-wrap">
+            <div class="modal-desc" id="modal-desc"></div>
+          </div>
+
+          <!-- Actions -->
+          <div class="modal-actions">
+            <button class="btn btn-primary" id="modal-read">Read in App</button>
+            <button class="btn btn-secondary" id="modal-open">Open File</button>
+            <button class="btn btn-secondary" id="modal-show-folder">Show in Explorer</button>
+            <button class="btn btn-ghost" id="modal-rescan">Rescan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-app reader overlay -->
+  <div id="reader-overlay" class="hidden">
+    <div class="reader-toolbar">
+      <button class="btn btn-ghost btn-sm" id="reader-close">← Library</button>
+      <span id="reader-title"></span>
+      <div style="flex:1"></div>
+      <span id="reader-format-badge" class="format-badge"></span>
+    </div>
+    <div class="reader-body">
+      <iframe id="reader-frame" sandbox="allow-same-origin allow-scripts"></iframe>
+    </div>
+  </div>
+
+  <!-- Settings modal -->
+  <div class="modal-backdrop hidden" id="settings-backdrop">
+    <div class="modal settings-modal" id="settings-modal">
+      <button class="modal-close" id="settings-close">✕</button>
+      <h2 class="settings-title">Settings</h2>
+
+      <div class="settings-section">
+        <label class="settings-label">Library Folder</label>
+        <p class="settings-hint">The folder Book Catalog scans for ebook files.</p>
+        <div class="settings-folder-row">
+          <span class="settings-folder-path" id="settings-path-display">Not set</span>
+          <button class="btn btn-secondary btn-sm" id="settings-change-folder">Change…</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <label class="settings-label">Excluded Subfolders</label>
+        <p class="settings-hint">Subfolder names to skip during scan (one per line).</p>
+        <textarea class="settings-textarea" id="settings-excluded" rows="5" placeholder="Calibre Library&#10;Kpubs"></textarea>
+      </div>
+
+      <div class="settings-actions">
+        <button class="btn btn-primary" id="settings-save">Save</button>
+        <button class="btn btn-ghost" id="settings-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

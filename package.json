@@ -1,0 +1,61 @@
+{
+  "name": "book-catalog",
+  "version": "0.1.0",
+  "description": "A personal ebook catalog app — scans your library folder and organizes EPUBs, PDFs, MOBI, and DOCX files with metadata extraction, cover art, and reading status tracking.",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux"
+  },
+  "author": "shanteshpatil",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shanteshpatil/ebook-catalog.git"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "chokidar": "^3.6.0",
+    "mupdf": "^1.27.0",
+    "pdf-parse": "^1.1.1",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.bookcatalog.app",
+    "productName": "Book Catalog",
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility"
+    },
+    "files": [
+      "src/**/*"
+    ],
+    "asarUnpack": [
+      "node_modules/mupdf/**"
+    ]
+  }
+}
