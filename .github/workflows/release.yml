@@ -34,12 +34,14 @@ jobs:
       - run: npm ci
 
       - name: Build
-        run: npm run ${{ matrix.script }}
+        # --publish never: let electron-builder just produce local files;
+        # the release job below handles uploading so they don't conflict.
+        run: npm run ${{ matrix.script }} -- --publish never
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: dist-${{ matrix.os }}
@@ -48,8 +50,6 @@ jobs:
             dist/*.dmg
             dist/*.zip
             dist/*.AppImage
-            dist/*.deb
-            dist/*.snap
           if-no-files-found: warn
 
   release:
@@ -66,8 +66,11 @@ jobs:
       - name: List artifacts
         run: find artifacts -type f 2>/dev/null || echo "No artifacts found"
 
-      - uses: softprops/action-gh-release@v2
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           files: artifacts/**/*
           generate_release_notes: true
           draft: false
+          fail_on_unmatched_files: false
