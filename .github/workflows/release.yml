@@ -11,6 +11,7 @@ permissions:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: windows-latest
@@ -32,20 +33,28 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run ${{ matrix.script }}
+      - name: Build
+        run: npm run ${{ matrix.script }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: dist-${{ matrix.os }}
           path: |
             dist/*.exe
             dist/*.dmg
+            dist/*.zip
             dist/*.AppImage
             dist/*.deb
+            dist/*.snap
           if-no-files-found: warn
 
   release:
     needs: build
+    if: always() && !cancelled()
     runs-on: ubuntu-latest
 
     steps:
@@ -55,10 +64,10 @@ jobs:
           merge-multiple: true
 
       - name: List artifacts
-        run: find artifacts -type f | head -20
+        run: find artifacts -type f 2>/dev/null || echo "No artifacts found"
 
       - uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/*
+          files: artifacts/**/*
           generate_release_notes: true
           draft: false
