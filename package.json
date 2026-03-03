@@ -32,13 +32,13 @@
   "build": {
     "appId": "com.bookcatalog.app",
     "productName": "Book Catalog",
-    "icon": "build/icon.png",
+    "icon": "assets/icon.png",
     "win": {
       "target": [
         "nsis",
         "portable"
       ],
-      "icon": "build/icon.png"
+      "icon": "assets/icon.png"
     },
     "mac": {
       "target": [
@@ -53,14 +53,14 @@
       ],
       "identity": null,
       "category": "public.app-category.utilities",
-      "icon": "build/icon.png"
+      "icon": "assets/icon.png"
     },
     "linux": {
       "target": [
         "AppImage"
       ],
       "category": "Utility",
-      "icon": "build/icon.png"
+      "icon": "assets/icon.png"
     },
     "files": [
       "src/**/*"

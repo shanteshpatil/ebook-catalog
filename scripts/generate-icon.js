@@ -153,6 +153,7 @@ const png = Buffer.concat([
   pngChunk('IEND', Buffer.alloc(0)),
 ]);
 
-const outPath = path.join(__dirname, '..', 'build', 'icon.png');
+const outPath = path.join(__dirname, '..', 'assets', 'icon.png');
+fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, png);
 console.log(`✓ Generated ${outPath}  (${S}×${S} px, ${(png.length / 1024).toFixed(1)} KB)`);
