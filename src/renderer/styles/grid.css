@@ -7,24 +7,32 @@
 }
 
 .book-card {
-  background: var(--card-bg);
+  background: #fdfcfa;
   border-radius: var(--radius);
   overflow: hidden;
   cursor: pointer;
   border: 1px solid var(--border);
+  border-left: 5px solid var(--border);
   box-shadow: var(--shadow-card);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   display: flex;
   flex-direction: column;
 }
 
+/* Format-coloured spine strip */
+.book-card:has(.format-badge.epub)  { border-left-color: var(--epub-color); }
+.book-card:has(.format-badge.epub3) { border-left-color: var(--epub-color); }
+.book-card:has(.format-badge.pdf)   { border-left-color: var(--pdf-color);  }
+.book-card:has(.format-badge.mobi)  { border-left-color: var(--mobi-color); }
+.book-card:has(.format-badge.docx)  { border-left-color: var(--docx-color); }
+
 .book-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  transform: translateY(-4px) rotate(0.4deg);
+  box-shadow: 3px 12px 28px rgba(0,0,0,0.14);
 }
 
 .book-card:active {
-  transform: translateY(-1px);
+  transform: translateY(-1px) rotate(0deg);
 }
 
 /* Cover image */
@@ -32,7 +40,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 2 / 3;
-  background: linear-gradient(135deg, #e8f0e9 0%, #f3f4f6 100%);
+  background: #2c5f2e;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -51,15 +59,26 @@
 .book-cover-placeholder {
   width: 100%;
   height: 100%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40px;
-  font-weight: 800;
-  color: var(--accent);
-  opacity: 0.5;
-  font-family: Georgia, serif;
+  background: linear-gradient(160deg, #4a7d4f 0%, #2c5f2e 55%, #1e4220 100%);
+  font-size: 36px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: Georgia, 'Times New Roman', serif;
   text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* Inner frame — cloth-bound hardcover look */
+.book-cover-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 10px 10px 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  pointer-events: none;
 }
 
 /* Format badge on card */
