@@ -7,10 +7,10 @@
     "start": "electron .",
     "dev": "electron . --dev",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "dist:win": "electron-builder --win",
-    "dist:mac": "electron-builder --mac",
-    "dist:linux": "electron-builder --linux"
+    "dist": "electron-builder --publish always",
+    "dist:win": "electron-builder --win --publish always",
+    "dist:mac": "electron-builder --mac --publish always",
+    "dist:linux": "electron-builder --linux --publish always"
   },
   "author": "shanteshpatil",
   "license": "MIT",
@@ -61,6 +61,9 @@
       ],
       "category": "Utility",
       "icon": "assets/icon.png"
+    },
+    "publish": {
+      "provider": "github"
     },
     "files": [
       "src/**/*"
