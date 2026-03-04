@@ -6,7 +6,7 @@ const { ipcMain, shell, dialog } = require('electron');
 const { scanAll, scanSingleFile } = require('./scanner');
 const { getAllBooks, searchBooks, getStats, setRating, setNotes, setStatus, setMetadata, getBookById } = require('./database');
 const { toCSV, toJSON } = require('./exporter');
-const { getLibraryPath, setLibraryPath, getExcludedFolders, setExcludedFolders, getAll: getSettings } = require('./settings');
+const { getLibraryPath, setLibraryPath, getExcludedFolders, setExcludedFolders, setBackgroundImageUrl, getAll: getSettings } = require('./settings');
 
 function serializeBook(book) {
   return book || null;
@@ -185,6 +185,11 @@ function registerHandlers(db, getWin, onLibraryPathChanged) {
 
   ipcMain.handle('settings:set-excluded-folders', (event, folders) => {
     setExcludedFolders(folders);
+    return getSettings();
+  });
+
+  ipcMain.handle('settings:set-background-image-url', (event, url) => {
+    setBackgroundImageUrl(url);
     return getSettings();
   });
 

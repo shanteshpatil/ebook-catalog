@@ -7,7 +7,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getSettings:          ()              => ipcRenderer.invoke('settings:get'),
   pickFolder:           ()              => ipcRenderer.invoke('settings:pick-folder'),
   setLibraryPath:       (p)            => ipcRenderer.invoke('settings:set-library-path', p),
-  setExcludedFolders:   (arr)          => ipcRenderer.invoke('settings:set-excluded-folders', arr),
+  setExcludedFolders:       (arr)  => ipcRenderer.invoke('settings:set-excluded-folders', arr),
+  setBackgroundImageUrl:    (url)  => ipcRenderer.invoke('settings:set-background-image-url', url),
 
   // Data requests
   scanAll:       ()           => ipcRenderer.invoke('books:scan-all'),

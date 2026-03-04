@@ -53,6 +53,7 @@ const els = {
   settingsPathDisplay: $('settings-path-display'),
   settingsChangeFolder:$('settings-change-folder'),
   settingsExcluded:    $('settings-excluded'),
+  settingsBgImage:     $('settings-bg-image'),
   settingsSave:        $('settings-save'),
   settingsCancel:      $('settings-cancel'),
   exportDropdown:  $('export-dropdown'),
@@ -107,6 +108,7 @@ async function init() {
 
   try {
     const settings = await api.getSettings();
+    applyBackgroundImage(settings.backgroundImageUrl || '');
     const hasPath = !!settings.libraryPath;
 
     if (hasPath) {
@@ -568,11 +570,23 @@ function updateStats() {
 // ── Settings modal ────────────────────────────────────────────────────
 let _settingsCurrentPath = null;
 
+function applyBackgroundImage(url) {
+  const grid = els.gridView;
+  if (url) {
+    grid.style.backgroundImage = `url('${url}')`;
+    grid.classList.add('has-bg-image');
+  } else {
+    grid.style.backgroundImage = '';
+    grid.classList.remove('has-bg-image');
+  }
+}
+
 async function openSettings() {
   const settings = await api.getSettings();
   _settingsCurrentPath = settings.libraryPath || null;
   els.settingsPathDisplay.textContent = _settingsCurrentPath || 'Not set';
   els.settingsExcluded.value = (settings.excludedFolders || []).join('\n');
+  els.settingsBgImage.value = settings.backgroundImageUrl || '';
   els.settingsBackdrop.classList.remove('hidden');
 }
 
@@ -701,6 +715,9 @@ function bindEvents() {
       await api.setLibraryPath(_settingsCurrentPath);
     }
     await api.setExcludedFolders(excluded);
+    const bgUrl = els.settingsBgImage.value.trim();
+    await api.setBackgroundImageUrl(bgUrl);
+    applyBackgroundImage(bgUrl);
     closeSettings();
 
     if (pathChanged && _settingsCurrentPath) {
