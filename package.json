@@ -9,6 +9,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder --publish always",
     "dist:win": "electron-builder --win --publish always",
+    "dist:win:local": "electron-builder --win --publish never",
     "dist:mac": "electron-builder --mac --publish always",
     "dist:linux": "electron-builder --linux --publish always"
   },
