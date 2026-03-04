@@ -4,6 +4,10 @@
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 28px 20px;
   padding: 28px;
+  background-image: url('https://images.unsplash.com/photo-1585773818428-b50bebdc2344?q=80&w=1205&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
+  min-height: 100%;
 }
 
 .book-card {
@@ -101,20 +105,22 @@
 .card-title {
   font-size: 12px;
   font-weight: 600;
-  color: var(--text);
+  color: #ffffff;
   line-height: 1.35;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
 }
 
 .card-author {
   font-size: 11px;
   font-weight: 400;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.85);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
 }
 
 .card-meta {
@@ -126,7 +132,8 @@
 
 .card-year {
   font-size: 10px;
-  color: var(--text-light);
+  color: rgba(255,255,255,0.7);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
 }
 
 .card-stars {
@@ -135,6 +142,6 @@
 }
 .card-star {
   font-size: 9px;
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
 }
 .card-star.filled { color: #f59e0b; }
