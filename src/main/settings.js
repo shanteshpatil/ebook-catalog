@@ -10,6 +10,7 @@ let _settings = null;
 const DEFAULTS = {
   libraryPath: null,           // null = not configured yet (triggers first-run)
   excludedFolders: [],         // user-defined folder names to skip
+  backgroundImageUrl: '',      // custom grid background image URL
 };
 
 function getSettingsPath() {
@@ -60,8 +61,18 @@ function setExcludedFolders(arr) {
   save();
 }
 
+function getBackgroundImageUrl() {
+  return load().backgroundImageUrl || '';
+}
+
+function setBackgroundImageUrl(url) {
+  load();
+  _settings.backgroundImageUrl = typeof url === 'string' ? url.trim() : '';
+  save();
+}
+
 function getAll() {
   return { ...load() };
 }
 
-module.exports = { load, getLibraryPath, setLibraryPath, getExcludedFolders, setExcludedFolders, getAll };
+module.exports = { load, getLibraryPath, setLibraryPath, getExcludedFolders, setExcludedFolders, getBackgroundImageUrl, setBackgroundImageUrl, getAll };

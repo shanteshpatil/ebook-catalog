@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: file: https://images.unsplash.com; font-src 'self'; frame-src 'self' file: data:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: file: https:; font-src 'self'; frame-src 'self' file: data:;">
   <title>Book Catalog</title>
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/sidebar.css">
@@ -237,6 +237,12 @@
         <label class="settings-label">Excluded Subfolders</label>
         <p class="settings-hint">Subfolder names to skip during scan (one per line).</p>
         <textarea class="settings-textarea" id="settings-excluded" rows="5" placeholder="Calibre Library&#10;Kpubs"></textarea>
+      </div>
+
+      <div class="settings-section">
+        <label class="settings-label">Grid Background Image</label>
+        <p class="settings-hint">Paste an image URL to use as the grid background. Leave blank for none.</p>
+        <input class="settings-textarea" type="url" id="settings-bg-image" placeholder="https://…" style="height:auto;padding:10px 12px;resize:none;">
       </div>
 
       <div class="settings-actions">
