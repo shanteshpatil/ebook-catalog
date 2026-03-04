@@ -245,6 +245,26 @@
         <input class="settings-textarea" type="url" id="settings-bg-image" placeholder="https://…" style="height:auto;padding:10px 12px;resize:none;">
       </div>
 
+      <div class="settings-section">
+        <label class="settings-label">Grid Background Color</label>
+        <p class="settings-hint">Used when no background image is set.</p>
+        <div class="settings-color-row">
+          <input type="checkbox" id="settings-bg-color-enabled" class="settings-color-toggle">
+          <label for="settings-bg-color-enabled" class="settings-color-toggle-label">Enable custom color</label>
+          <input type="color" id="settings-bg-color" value="#e8e8e8" class="settings-color-input">
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <label class="settings-label">Card Text Color</label>
+        <p class="settings-hint">Color of book title, author, and metadata text.</p>
+        <div class="settings-color-row">
+          <input type="checkbox" id="settings-text-color-enabled" class="settings-color-toggle">
+          <label for="settings-text-color-enabled" class="settings-color-toggle-label">Enable custom color</label>
+          <input type="color" id="settings-text-color" value="#1a1a1a" class="settings-color-input">
+        </div>
+      </div>
+
       <div class="settings-actions">
         <button class="btn btn-primary" id="settings-save">Save</button>
         <button class="btn btn-ghost" id="settings-cancel">Cancel</button>

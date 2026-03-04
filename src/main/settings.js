@@ -11,6 +11,8 @@ const DEFAULTS = {
   libraryPath: null,           // null = not configured yet (triggers first-run)
   excludedFolders: [],         // user-defined folder names to skip
   backgroundImageUrl: '',      // custom grid background image URL
+  backgroundColor: '',         // custom grid background color (empty = use app default)
+  cardTextColor: '',           // custom card text color (empty = use app default)
 };
 
 function getSettingsPath() {
@@ -71,8 +73,28 @@ function setBackgroundImageUrl(url) {
   save();
 }
 
+function getBackgroundColor() {
+  return load().backgroundColor || '';
+}
+
+function setBackgroundColor(color) {
+  load();
+  _settings.backgroundColor = typeof color === 'string' ? color.trim() : '';
+  save();
+}
+
+function getCardTextColor() {
+  return load().cardTextColor || '';
+}
+
+function setCardTextColor(color) {
+  load();
+  _settings.cardTextColor = typeof color === 'string' ? color.trim() : '';
+  save();
+}
+
 function getAll() {
   return { ...load() };
 }
 
-module.exports = { load, getLibraryPath, setLibraryPath, getExcludedFolders, setExcludedFolders, getBackgroundImageUrl, setBackgroundImageUrl, getAll };
+module.exports = { load, getLibraryPath, setLibraryPath, getExcludedFolders, setExcludedFolders, getBackgroundImageUrl, setBackgroundImageUrl, getBackgroundColor, setBackgroundColor, getCardTextColor, setCardTextColor, getAll };

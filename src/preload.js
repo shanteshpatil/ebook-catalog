@@ -9,6 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setLibraryPath:       (p)            => ipcRenderer.invoke('settings:set-library-path', p),
   setExcludedFolders:       (arr)  => ipcRenderer.invoke('settings:set-excluded-folders', arr),
   setBackgroundImageUrl:    (url)  => ipcRenderer.invoke('settings:set-background-image-url', url),
+  setBackgroundColor:       (color) => ipcRenderer.invoke('settings:set-background-color', color),
+  setCardTextColor:         (color) => ipcRenderer.invoke('settings:set-card-text-color', color),
 
   // Data requests
   scanAll:       ()           => ipcRenderer.invoke('books:scan-all'),
