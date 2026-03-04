@@ -7,6 +7,7 @@
   min-height: 100%;
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 }
 
 .book-card {
@@ -158,4 +159,23 @@
 }
 .book-grid.has-bg-image .card-star {
   color: rgba(255,255,255,0.5);
+}
+
+/* Custom card text color — overrides both defaults and bg-image white */
+.book-grid.has-custom-text .card-title,
+.book-grid.has-bg-image.has-custom-text .card-title {
+  color: var(--custom-text-color);
+  text-shadow: none;
+}
+.book-grid.has-custom-text .card-author,
+.book-grid.has-bg-image.has-custom-text .card-author {
+  color: var(--custom-text-color);
+  opacity: 0.75;
+  text-shadow: none;
+}
+.book-grid.has-custom-text .card-year,
+.book-grid.has-bg-image.has-custom-text .card-year {
+  color: var(--custom-text-color);
+  opacity: 0.6;
+  text-shadow: none;
 }

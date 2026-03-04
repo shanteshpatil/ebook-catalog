@@ -48,14 +48,18 @@ const els = {
   btnSettings:     $('btn-settings'),
   btnExport:       $('btn-export'),
   // Settings modal
-  settingsBackdrop:    $('settings-backdrop'),
-  settingsClose:       $('settings-close'),
-  settingsPathDisplay: $('settings-path-display'),
-  settingsChangeFolder:$('settings-change-folder'),
-  settingsExcluded:    $('settings-excluded'),
-  settingsBgImage:     $('settings-bg-image'),
-  settingsSave:        $('settings-save'),
-  settingsCancel:      $('settings-cancel'),
+  settingsBackdrop:        $('settings-backdrop'),
+  settingsClose:           $('settings-close'),
+  settingsPathDisplay:     $('settings-path-display'),
+  settingsChangeFolder:    $('settings-change-folder'),
+  settingsExcluded:        $('settings-excluded'),
+  settingsBgImage:         $('settings-bg-image'),
+  settingsBgColorEnabled:  $('settings-bg-color-enabled'),
+  settingsBgColor:         $('settings-bg-color'),
+  settingsTextColorEnabled:$('settings-text-color-enabled'),
+  settingsTextColor:       $('settings-text-color'),
+  settingsSave:            $('settings-save'),
+  settingsCancel:          $('settings-cancel'),
   exportDropdown:  $('export-dropdown'),
   exportCsv:       $('export-csv'),
   exportJson:      $('export-json'),
@@ -109,6 +113,8 @@ async function init() {
   try {
     const settings = await api.getSettings();
     applyBackgroundImage(settings.backgroundImageUrl || '');
+    applyBackgroundColor(settings.backgroundColor || '');
+    applyCardTextColor(settings.cardTextColor || '');
     const hasPath = !!settings.libraryPath;
 
     if (hasPath) {
@@ -581,12 +587,39 @@ function applyBackgroundImage(url) {
   }
 }
 
+function applyBackgroundColor(color) {
+  const grid = els.gridView;
+  grid.style.backgroundColor = color || '';
+}
+
+function applyCardTextColor(color) {
+  const grid = els.gridView;
+  if (color) {
+    grid.style.setProperty('--custom-text-color', color);
+    grid.classList.add('has-custom-text');
+  } else {
+    grid.style.removeProperty('--custom-text-color');
+    grid.classList.remove('has-custom-text');
+  }
+}
+
 async function openSettings() {
   const settings = await api.getSettings();
   _settingsCurrentPath = settings.libraryPath || null;
   els.settingsPathDisplay.textContent = _settingsCurrentPath || 'Not set';
   els.settingsExcluded.value = (settings.excludedFolders || []).join('\n');
   els.settingsBgImage.value = settings.backgroundImageUrl || '';
+
+  const bgColor = settings.backgroundColor || '';
+  els.settingsBgColorEnabled.checked = !!bgColor;
+  els.settingsBgColor.value = bgColor || '#e8e8e8';
+  els.settingsBgColor.disabled = !bgColor;
+
+  const textColor = settings.cardTextColor || '';
+  els.settingsTextColorEnabled.checked = !!textColor;
+  els.settingsTextColor.value = textColor || '#1a1a1a';
+  els.settingsTextColor.disabled = !textColor;
+
   els.settingsBackdrop.classList.remove('hidden');
 }
 
@@ -695,6 +728,14 @@ function bindEvents() {
     openSettings();
   });
 
+  // Settings color toggle checkboxes
+  els.settingsBgColorEnabled.addEventListener('change', () => {
+    els.settingsBgColor.disabled = !els.settingsBgColorEnabled.checked;
+  });
+  els.settingsTextColorEnabled.addEventListener('change', () => {
+    els.settingsTextColor.disabled = !els.settingsTextColorEnabled.checked;
+  });
+
   // Settings modal — change folder
   els.settingsChangeFolder.addEventListener('click', async () => {
     const chosen = await api.pickFolder();
@@ -718,6 +759,15 @@ function bindEvents() {
     const bgUrl = els.settingsBgImage.value.trim();
     await api.setBackgroundImageUrl(bgUrl);
     applyBackgroundImage(bgUrl);
+
+    const bgColor = els.settingsBgColorEnabled.checked ? els.settingsBgColor.value : '';
+    await api.setBackgroundColor(bgColor);
+    applyBackgroundColor(bgColor);
+
+    const textColor = els.settingsTextColorEnabled.checked ? els.settingsTextColor.value : '';
+    await api.setCardTextColor(textColor);
+    applyCardTextColor(textColor);
+
     closeSettings();
 
     if (pathChanged && _settingsCurrentPath) {

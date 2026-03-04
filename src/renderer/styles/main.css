@@ -455,6 +455,35 @@ html, body {
   transition: border-color 0.15s;
 }
 .settings-textarea:focus { border-color: var(--accent); }
+.settings-color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.settings-color-toggle {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+.settings-color-toggle-label {
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+.settings-color-input {
+  width: 40px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  cursor: pointer;
+  background: var(--surface);
+}
+.settings-color-input:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
 .settings-actions {
   display: flex;
   gap: 10px;
