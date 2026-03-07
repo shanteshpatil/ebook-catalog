@@ -154,10 +154,15 @@ function showApp() {
 
 // ── Load books ────────────────────────────────────────────────────────
 async function loadBooks() {
-  const books = await api.getBooks({ sort: state.sort, dir: state.dir });
-  state.books = books;
-  applyFilter();
-  renderSidebar();
+  try {
+    const books = await api.getBooks({ sort: state.sort, dir: state.dir });
+    state.books = books;
+    applyFilter();
+    renderSidebar();
+  } catch (e) {
+    console.error('loadBooks error:', e);
+    showToast('Failed to load books', 'error');
+  }
 }
 
 function applyFilter() {
@@ -940,6 +945,9 @@ function setupIPCListeners() {
   api.onScanDone(async (scanStats) => {
     els.scanOverlay.classList.add('hidden');
     showApp();
+    // Reset folder/format filters so newly added books are always visible
+    state.folder = 'all';
+    state.format = 'all';
     await loadBooks();
     showToast(`Scan complete: ${scanStats.added || 0} new / updated books`, 'success');
   });
@@ -973,7 +981,8 @@ async function startScan() {
   els.scanOverlay.classList.remove('hidden');
   els.progressBar.style.width = '0%';
   els.progressText.textContent = 'Starting…';
-  els.scanStatus.textContent = 'Scanning D:\\OneDrive\\Books…';
+  const settings = await api.getSettings();
+  els.scanStatus.textContent = `Scanning ${settings.libraryPath || 'library'}…`;
   api.scanAll(); // fire and forget - progress comes via IPC
 }
 
