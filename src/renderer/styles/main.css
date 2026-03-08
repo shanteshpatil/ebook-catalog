@@ -81,6 +81,19 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Full-viewport background image layer.
+   Kept at the document root so Chromium composites it at full
+   device resolution — applying background-attachment:fixed inside
+   an overflow:auto container causes blurry rasterisation. */
+#bg-image-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+}
+
 /* Utility */
 .hidden { display: none !important; }
 
@@ -119,6 +132,13 @@ html, body {
   border: 1px solid var(--border);
 }
 .btn-ghost:hover { background: var(--tag-bg); }
+
+.btn-danger {
+  background: transparent;
+  color: #c0392b;
+  border: 1px solid #e8b4b0;
+}
+.btn-danger:hover { background: #fdf0ef; border-color: #c0392b; }
 
 .btn-sm { padding: 6px 12px; font-size: 12px; }
 .btn-large { padding: 12px 28px; font-size: 15px; }

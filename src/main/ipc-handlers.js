@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { ipcMain, shell, dialog } = require('electron');
 const { scanAll, scanSingleFile } = require('./scanner');
-const { getAllBooks, searchBooks, getStats, setRating, setNotes, setStatus, setMetadata, getBookById } = require('./database');
+const { getAllBooks, searchBooks, getStats, setRating, setNotes, setStatus, setMetadata, getBookById, deleteBookByPath } = require('./database');
 const { toCSV, toJSON } = require('./exporter');
 const { getLibraryPath, setLibraryPath, getExcludedFolders, setExcludedFolders, setBackgroundImageUrl, setBackgroundColor, setCardTextColor, getAll: getSettings } = require('./settings');
 
@@ -251,6 +251,16 @@ function registerHandlers(db, getWin, onLibraryPathChanged) {
   ipcMain.handle('books:rescan-file', async (event, filePath) => {
     const book = await scanSingleFile(filePath);
     return serializeBook(book);
+  });
+
+  ipcMain.handle('books:delete-file', async (event, filePath) => {
+    try {
+      await fs.promises.unlink(filePath);
+      deleteBookByPath(filePath);
+      return { success: true };
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
   });
 
   ipcMain.handle('books:get-epub-content', async (event, filePath) => {

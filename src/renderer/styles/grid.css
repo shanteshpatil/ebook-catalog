@@ -4,10 +4,8 @@
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 28px 20px;
   padding: 28px;
+  align-content: start;
   min-height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
 }
 
 .book-card {

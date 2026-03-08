@@ -96,7 +96,9 @@ const els = {
   modalOpen:       $('modal-open'),
   modalShowFolder: $('modal-show-folder'),
   modalRescan:     $('modal-rescan'),
+  modalDelete:     $('modal-delete'),
   toastContainer:  $('toast-container'),
+  bgLayer:         $('bg-image-layer'),
   // Reader
   readerOverlay:   $('reader-overlay'),
   readerClose:     $('reader-close'),
@@ -495,6 +497,22 @@ function openModal(book) {
     }
   };
 
+  els.modalDelete.onclick = async () => {
+    const name = book.title || book.file_name;
+    if (!confirm(`Permanently delete "${name}" from disk?\n\nThis cannot be undone.`)) return;
+    const result = await api.deleteFile(book.file_path);
+    if (result && result.success) {
+      const idx = state.books.findIndex(b => b.id === book.id);
+      if (idx !== -1) state.books.splice(idx, 1);
+      closeModal();
+      applyFilter();
+      renderSidebar();
+      showToast(`Deleted: ${name}`);
+    } else {
+      showToast(`Could not delete file: ${result?.error || 'unknown error'}`, 'error');
+    }
+  };
+
   els.modalBackdrop.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
@@ -582,13 +600,12 @@ function updateStats() {
 let _settingsCurrentPath = null;
 
 function applyBackgroundImage(url) {
-  const grid = els.gridView;
   if (url) {
-    grid.style.backgroundImage = `url('${url}')`;
-    grid.classList.add('has-bg-image');
+    els.bgLayer.style.backgroundImage = `url('${url}')`;
+    els.gridView.classList.add('has-bg-image');
   } else {
-    grid.style.backgroundImage = '';
-    grid.classList.remove('has-bg-image');
+    els.bgLayer.style.backgroundImage = '';
+    els.gridView.classList.remove('has-bg-image');
   }
 }
 
