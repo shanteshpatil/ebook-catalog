@@ -81,19 +81,6 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Full-viewport background image layer.
-   Kept at the document root so Chromium composites it at full
-   device resolution — applying background-attachment:fixed inside
-   an overflow:auto container causes blurry rasterisation. */
-#bg-image-layer {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-size: cover;
-  background-position: center;
-}
-
 /* Utility */
 .hidden { display: none !important; }
 
