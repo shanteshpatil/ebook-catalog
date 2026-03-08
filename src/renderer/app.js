@@ -98,7 +98,6 @@ const els = {
   modalRescan:     $('modal-rescan'),
   modalDelete:     $('modal-delete'),
   toastContainer:  $('toast-container'),
-  bgLayer:         $('bg-image-layer'),
   // Reader
   readerOverlay:   $('reader-overlay'),
   readerClose:     $('reader-close'),
@@ -601,10 +600,14 @@ let _settingsCurrentPath = null;
 
 function applyBackgroundImage(url) {
   if (url) {
-    els.bgLayer.style.backgroundImage = `url('${url}')`;
+    document.body.style.backgroundImage = `url('${url}')`;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
     els.gridView.classList.add('has-bg-image');
   } else {
-    els.bgLayer.style.backgroundImage = '';
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundSize = '';
+    document.body.style.backgroundPosition = '';
     els.gridView.classList.remove('has-bg-image');
   }
 }
