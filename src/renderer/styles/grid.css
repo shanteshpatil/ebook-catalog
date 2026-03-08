@@ -9,19 +9,20 @@
 }
 
 .book-card {
-  background: transparent;
+  background: var(--card-bg);
   border: none;
-  border-radius: 0;
-  box-shadow: none;
-  overflow: visible;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .book-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.14);
 }
 
 .book-card:active {
@@ -36,10 +37,8 @@
   background: #c8c8c8;
   overflow: hidden;
   flex-shrink: 0;
-  border-radius: 4px;
-  box-shadow:
-    0 2px 4px rgba(0,0,0,0.12),
-    0 6px 16px rgba(0,0,0,0.14);
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .book-cover {
@@ -64,9 +63,12 @@
   letter-spacing: 2px;
 }
 
-/* Format badge — hidden on cover, shown in info row instead */
+/* Format badge — shown on cover, top-right corner */
 .card-format-badge {
-  display: none;
+  display: inline-block;
+  position: absolute;
+  top: 7px;
+  right: 7px;
 }
 
 /* Status indicators on cover */
@@ -94,7 +96,7 @@
 
 /* Card info */
 .book-card-info {
-  padding: 9px 2px 0;
+  padding: 10px 12px 12px;
   display: flex;
   flex-direction: column;
   gap: 2px;
