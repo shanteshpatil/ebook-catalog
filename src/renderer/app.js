@@ -98,6 +98,7 @@ const els = {
   modalRescan:     $('modal-rescan'),
   modalDelete:     $('modal-delete'),
   toastContainer:  $('toast-container'),
+  bgLayer:         $('bg-image-layer'),
   // Reader
   readerOverlay:   $('reader-overlay'),
   readerClose:     $('reader-close'),
@@ -599,13 +600,12 @@ function updateStats() {
 let _settingsCurrentPath = null;
 
 function applyBackgroundImage(url) {
-  const grid = els.gridView;
   if (url) {
-    grid.style.backgroundImage = `url('${url}')`;
-    grid.classList.add('has-bg-image');
+    els.bgLayer.style.backgroundImage = `url('${url}')`;
+    els.gridView.classList.add('has-bg-image');
   } else {
-    grid.style.backgroundImage = '';
-    grid.classList.remove('has-bg-image');
+    els.bgLayer.style.backgroundImage = '';
+    els.gridView.classList.remove('has-bg-image');
   }
 }
 

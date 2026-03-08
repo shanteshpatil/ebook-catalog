@@ -6,9 +6,6 @@
   padding: 28px;
   align-content: start;
   min-height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
 }
 
 .book-card {
