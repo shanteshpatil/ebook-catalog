@@ -22,6 +22,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openFile:      (filePath)   => ipcRenderer.invoke('books:open-file', filePath),
   showInFolder:  (filePath)   => ipcRenderer.invoke('books:show-in-folder', filePath),
   rescanFile:    (filePath)   => ipcRenderer.invoke('books:rescan-file', filePath),
+  deleteFile:    (filePath)   => ipcRenderer.invoke('books:delete-file', filePath),
   setRating:      (id, rating)  => ipcRenderer.invoke('books:set-rating', { id, rating }),
   setNotes:       (id, notes)   => ipcRenderer.invoke('books:set-notes', { id, notes }),
   setStatus:      (id, status)  => ipcRenderer.invoke('books:set-status', { id, status }),

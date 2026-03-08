@@ -96,6 +96,7 @@ const els = {
   modalOpen:       $('modal-open'),
   modalShowFolder: $('modal-show-folder'),
   modalRescan:     $('modal-rescan'),
+  modalDelete:     $('modal-delete'),
   toastContainer:  $('toast-container'),
   // Reader
   readerOverlay:   $('reader-overlay'),
@@ -492,6 +493,22 @@ function openModal(book) {
       if (idx !== -1) state.books[idx] = updated;
       openModal(updated);
       showToast('Rescan complete', 'success');
+    }
+  };
+
+  els.modalDelete.onclick = async () => {
+    const name = book.title || book.file_name;
+    if (!confirm(`Permanently delete "${name}" from disk?\n\nThis cannot be undone.`)) return;
+    const result = await api.deleteFile(book.file_path);
+    if (result && result.success) {
+      const idx = state.books.findIndex(b => b.id === book.id);
+      if (idx !== -1) state.books.splice(idx, 1);
+      closeModal();
+      applyFilter();
+      renderSidebar();
+      showToast(`Deleted: ${name}`);
+    } else {
+      showToast(`Could not delete file: ${result?.error || 'unknown error'}`, 'error');
     }
   };
 
